@@ -1,6 +1,6 @@
 # Scrapping de las negociaciones de la Bolsa de Madrid
 
-Codigo fuente del contenido del video para los miembros de la comunidad Pynacle
+Codigo fuente del contenido del video distinado a los miembros de la comunidad Pynacle
 
 Este código es para solamente fines educativos, si quierees usar los datos para otros fines debes pedir autorización  BME Market Data.
 
