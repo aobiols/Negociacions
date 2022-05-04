@@ -38,7 +38,7 @@ if __name__ == '__main__':
 
         # Preparamos el  dataframe donde almacenaremos los datos
         df = []
-        siguiente = [1, 2]
+        siguiente = ['Dame más']
 
         # MIENTRAS NOS QUEDEN PAGINAS A PARSEAR
         while len(siguiente) > 0:
@@ -50,6 +50,12 @@ if __name__ == '__main__':
             for fila in soup.find_all('tr', align="right"):
                 tds = fila.find_all('td')
                 if len(tds) > 5:
+
+                    # Hora  --> columna 0
+                    # Precio --> columna 1
+                    # Volumen --> columna 2
+                    # Id de la operación --> columna 5
+
                     print('Data: ' + tds[0].text + '---' + tds[1].text + '---' + tds[2].text + '----' + tds[5].text)
                     df_row = [tds[0].text, tds[1].text, tds[2].text, tds[5].text]
                     df.append(df_row)

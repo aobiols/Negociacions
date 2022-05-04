@@ -39,7 +39,7 @@ if __name__ == '__main__':
 
         # Preparamos el  dataframe donde almacenaremos los datos
         df = []
-        siguiente = [1, 2]
+        siguiente = ['Dame más']
 
         # MIENTRAS NOS QUEDEN PAGINAS A PARSEAR
         while len(siguiente) > 0:
@@ -51,7 +51,10 @@ if __name__ == '__main__':
             for fila in soup.find_all('tr', align="right"):
                 tds = fila.find_all('td')
                 if len(tds) > 5:
-                    print('Data: ' + tds[0].text + '---' + tds[1].text + '---' + tds[2].text + '----' + tds[5].text)
+                    # Hora  --> columna 0
+                    # Precio --> columna 1
+                    # Volumen --> columna 2
+                    # Id de la operación --> columna 5
                     df_row = [tds[0].text, tds[1].text, tds[2].text, tds[5].text]
                     df.append(df_row)
 
@@ -85,6 +88,9 @@ if __name__ == '__main__':
         df_pandas = df_pandas.sort_values(by=['Id'])
         df_pandas = df_pandas.reset_index(drop=True)
 
+        # ------------------------------------------------------------------
+        #  PARTE 2:  Agregación de  operaciones
+        # ------------------------------------------------------------------
         #  Inicializamos las variables para hacer la agregación de las operaciones
         df_grandes_ops = []
         precio_inicial = 0
@@ -109,20 +115,24 @@ if __name__ == '__main__':
                     # Si el precio es el mismo y estabamos comprando suponemos que será una intención de compra
                     # y se estabamos vendiendo será otra venta
 
+                # Preparamos el registro a insertar de la operación agregada en el nuevo dataframe
                 df_row = [operacion_realizada, ultima_hora, precio_anterior, suma_volumen, operaciones]
                 operaciones = 1
                 precio_inicial = precio_anterior
 
-                # Si es una operacion por bloques mantenemos el precio
+                # Si no hay precio en la opración, indica que se ha ejecutado una operacion por bloques
+                # como no sabemos el precio, lo mantenemos
                 if not math.isnan(row['Precio']):
                     precio_anterior = row['Precio']
-                    if 'BLOCS' in operacion_realizada:
+                    if 'BLOQUES' in operacion_realizada:
                         operacion_realizada = operacion_realizada.split(" ")[0]
                 else:
                     operacion_realizada = operacion_realizada + ' BLOQUES'
 
                 suma_volumen = row['Volumen']
                 ultima_hora = row['Hora']
+
+                # Insertamos  la operación agregada en el nuevo dataframe
                 df_grandes_ops.append(df_row)
 
         # Grabamos la última Iteración
