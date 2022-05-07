@@ -90,6 +90,7 @@ if __name__ == '__main__':
         df_pandas = df_pandas.sort_values(by=['Id'])
         df_pandas = df_pandas.reset_index(drop=True)
 
+        # Damos formato a la fecha para usarlo en el nombre del fichero
         dia = df_pandas['Hora'][0].split(" ")[0].replace('/', '_')
 
         # GENERAMOS FICHERO EXCEL
