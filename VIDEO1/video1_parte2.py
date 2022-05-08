@@ -98,7 +98,7 @@ if __name__ == '__main__':
         suma_volumen = 0
         ultima_hora = df_pandas['Hora'][0]
         operaciones = 0
-        operacion_realizada = 'Subhasta Inicial'
+        operacion_realizada = 'Subasta Inicial'
 
         for index_ops, row in df_pandas.iterrows():
             if row['Hora'] == ultima_hora:
@@ -107,7 +107,7 @@ if __name__ == '__main__':
                 operaciones = operaciones + 1
             else:
                 if precio_inicial == 0:
-                    operacion_realizada = 'Subhasta Inicial'
+                    operacion_realizada = 'Subasta Inicial'
                 elif precio_anterior > precio_inicial:
                     operacion_realizada = 'Compra'
                 elif precio_anterior < precio_inicial:
@@ -136,17 +136,17 @@ if __name__ == '__main__':
                 df_grandes_ops.append(df_row)
 
         # Grabamos la última Iteración
-        df_row = ['Subhasta Final', ultima_hora, precio_anterior, suma_volumen, operaciones]
+        df_row = ['Subasta Final', ultima_hora, precio_anterior, suma_volumen, operaciones]
         df_grandes_ops.append(df_row)
 
         # Hacemos dataframe de agregación de operaciones
-        df_pandas_agrega_ops = pd.DataFrame(df_grandes_ops, columns=["Operación", "Hora", "Precio", "Volumen", "Operacionrs"])
+        df_pandas_agrega_ops = pd.DataFrame(df_grandes_ops, columns=["Operación", "Hora", "Precio", "Volumen", "Num. Operaciones"])
         print('ACABO DE AGREGAR LAS OPERACIONES DE ' + ticker)
 
         dia = df_pandas['Hora'][0].split(" ")[0].replace('/', '_')
 
-        # ESCRIBIM EXCEL
+        # Generamos el fichero EXCEL
         with pd.ExcelWriter('RESULTADOS/operaciones_' + ticker + '_' + dia + '.xlsx') as writer:
-            df_pandas_agrega_ops.to_excel(writer, sheet_name='Resum', engine='xlsxwriter')
+            df_pandas_agrega_ops.to_excel(writer, sheet_name='Resumen', engine='xlsxwriter')
             df_pandas.to_excel(writer, sheet_name='Todas', engine='xlsxwriter')
 
